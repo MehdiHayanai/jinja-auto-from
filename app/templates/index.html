@@ -1,0 +1,70 @@
+{% macro render_field(field) %} {% set field_id = field.id %} {% set field_name
+= field.name %} {% set field_type = field.type %} {% set field_label =
+field.label %} {% set group_label = field.group_label %} {% set field_required =
+field.required|default(false) %} {% set field_placeholder =
+field.placeholder|default('') %} {% set field_options =
+field.options|default([]) %} {% set field_autocomplete =
+field.autocomplete|default('') %} {% set field_step = field.step|default('') %}
+
+<div
+  class="form-group {% if group_label %}{{ group_label.lower().replace(' ', '-') }}{% endif %}"
+>
+  {% if field_label %}
+  <label for="{{ field_id }}">{{ field_label }}</label>
+  {% endif %} {% if field_type in ['text', 'password', 'email', 'number',
+  'float_field'] %} <input type="{{ field_type }}" id="{{ field_id }}" name="{{
+  field_name }}" {% if field_required %}required{% endif %} placeholder="{{
+  field_placeholder }}" autocomplete="{{ field_autocomplete }}" {% if field_type
+  == 'number' and field_step %}step="{{ field_step }}"{% endif %} /> {% elif
+  field_type == 'checkbox' %} {% for option in field_options %}
+  <div>
+    <input
+      type="checkbox"
+      id="{{ field_id }}_{{ loop.index }}"
+      name="{{ field_name }}"
+      value="{{ option.value }}"
+    />
+    <label for="{{ field_id }}_{{ loop.index }}">{{ option.label }}</label>
+  </div>
+  {% endfor %} {% elif field_type == 'radio' %} {% for option in field_options
+  %}
+  <div>
+    <input
+      type="radio"
+      id="{{ field_id }}_{{ loop.index }}"
+      name="{{ field_name }}"
+      value="{{ option.value }}"
+    />
+    <label for="{{ field_id }}_{{ loop.index }}">{{ option.label }}</label>
+  </div>
+  {% endfor %} {% elif field_type == 'select' %}
+  <select id="{{ field_id }}" name="{{ field_name }}">
+    {% for option in field_options %}
+    <option value="{{ option.value }}">{{ option.label }}</option>
+    {% endfor %}
+  </select>
+
+  {% elif field_type == 'textarea' %}
+  <textarea
+    id="{{ field_id }}"
+    name="{{ field_name }}"
+    rows="{{ field.rows|default(4) }}"
+    cols="{{ field.cols|default(50) }}"
+  ></textarea>
+
+  {% elif field_type == 'file' %}
+  <input type="file" id="{{ field_id }}" name="{{ field_name }}" />
+
+  {% elif field_type in ['date', 'time', 'color'] %}
+  <input type="{{ field_type }}" id="{{ field_id }}" name="{{ field_name }}" />
+
+  {% endif %}
+</div>
+{% endmacro %}
+
+<form>
+  {% for field in form_fields %} {% if field.group_label %}
+  <h3>{{ field.group_label }}</h3>
+  {% endif %} {{ render_field(field) }} {% endfor %}
+  <button type="submit">Submit</button>
+</form>

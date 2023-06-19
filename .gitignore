@@ -1,0 +1,33 @@
+# Ignore Python compiled files
+*.pyc
+
+# Ignore local configuration files
+instance/
+config.py
+
+# Ignore database files
+db.sqlite
+*.db
+
+# Ignore log files
+logs/
+*.log
+
+# Ignore environment files
+.env
+
+# Ignore IDE configuration files
+.vscode/
+.idea/
+
+# Ignore package dependencies
+venv/
+env/
+__pycache__/
+
+# Ignore deployment artifacts
+*.pyo
+*.pyd
+*.pyo
+
+# Ignore any other files or directories specific to your project that should not be committed to Git
